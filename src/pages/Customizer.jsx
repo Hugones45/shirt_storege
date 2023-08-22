@@ -37,77 +37,96 @@ export const Customizer = () => {
         return <ColorPicker />;
 
       case "filepicker":
-        return <FilePicker 
-        file={file}
-        setFile={setFile}
-        readFile={readFile}
+        return <FilePicker
+          file={file}
+          setFile={setFile}
+          readFile={readFile}
         />;
 
-        case "aipicker":
-            return <AIPicker
-            prompt={prompt}
-            setPrompt={setPrompt}
-            generatingImg={generatingImg}
-            handleSubmit={handleSubmit}
-            />
+      case "aipicker":
+        return <AIPicker
+          prompt={prompt}
+          setPrompt={setPrompt}
+          generatingImg={generatingImg}
+        // handleSubmit={handleSubmit}
+        />
 
       default:
         return null;
     }
   };
 
-  const handleSubmit = async (type) => {
-    if(!prompt) return alert("Please enter a prompt!")
 
-    try {
-      
-    } catch (error) {
-      alert(error)
-    } finally {
-setGeneratingImg(false)
-setActiveEditorTab("")
-    }
+  // const handleSubmit = async (type) => {
+  //   if (!prompt) return alert("Please enter a prompt!", {
 
-  }
+  //   })
+
+  //   try {
+
+  //     setGeneratingImg(true)
+
+  //     const response = await fetch('http://localhost:8080/api/v1/dalle', {
+  //       method: "POST",
+  //       headers: {
+  //         'Content-type': "application/json"
+  //       },
+  //       body: JSON.stringify({
+  //         prompt,
+  //       })
+  //     })
+
+  //     const data = await response.json()
+
+  //     handleDecals(type, `data:image/png;base64,${data.photo}`)
+
+  //   } catch (error) {
+  //     alert(error)
+  //   } finally {
+  //     setGeneratingImg(false)
+  //     setActiveEditorTab("")
+  //   }
+
+  // }
 
 
   const handleDecals = (type, result) => {
-      const decalType = DecalTypes[type]
+    const decalType = DecalTypes[type]
 
-      state[decalType.stateProperty] = result
+    state[decalType.stateProperty] = result
 
-      if(!activeFilterTab[decalType.filterTab]) {
-        handleActiveFilterTab(decalType.filterTab)
-      }
+    if (!activeFilterTab[decalType.filterTab]) {
+      handleActiveFilterTab(decalType.filterTab)
+    }
   }
 
   const handleActiveFilterTab = (tabName) => {
-    switch(tabName) {
-      case "logoShirt": 
-      state.isLogoTexture = !activeFilterTab[tabName]
-      break
+    switch (tabName) {
+      case "logoShirt":
+        state.isLogoTexture = !activeFilterTab[tabName]
+        break
       case "stylishShirt":
         state.isFullTexture = !activeFilterTab[tabName]
         break
-        default:
-          state.isLogoTexture = true
-          state.isFullTexture = false
+      default:
+        state.isLogoTexture = true
+        state.isFullTexture = false
     }
 
     setAcitiveFilterTab((prevState) => {
       return {
         ...prevState,
-        [tabName] : !prevState[tabName]
+        [tabName]: !prevState[tabName]
       }
     })
-  } 
+  }
 
   const readFile = (type) => {
     reader(file)
-    .then((result) => {
-      handleDecals(type, result);
-      setActiveEditorTab("")
-    })
+      .then((result) => {
+        handleDecals(type, result);
+        setActiveEditorTab("")
+      })
   }
 
   return (
@@ -122,12 +141,12 @@ setActiveEditorTab("")
             <div className="flex items-center min-h-screen">
               <div className="editortabs-container tabs">
                 {EditorTabs.map((tab) => (
-                  <Tab key={tab.name} 
-                  tab={tab} 
-                  handleClick={() => setActiveEditorTab(tab.name)} />
+                  <Tab key={tab.name}
+                    tab={tab}
+                    handleClick={() => setActiveEditorTab(tab.name)} />
                 ))}
 
-                    {generateTabContent()}
+                {generateTabContent()}
               </div>
             </div>
           </motion.div>
