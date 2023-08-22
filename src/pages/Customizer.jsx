@@ -143,7 +143,7 @@ export const Customizer = () => {
                 {EditorTabs.map((tab) => (
                   <Tab key={tab.name}
                     tab={tab}
-                    handleClick={() => setActiveEditorTab(tab.name)} />
+                    handleClick={() => setActiveEditorTab(activeEditorTab===tab.name?"":tab.name)} />
                 ))}
 
                 {generateTabContent()}
